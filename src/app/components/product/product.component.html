@@ -1,10 +1,32 @@
-<table class="table">
-    <tr *ngFor="let product of products">
-        <td>{{product.productId}}</td>
-        <td>{{product.productName}}</td>
-        <td>{{product.categoryId}}</td>
-        <td>{{product.unitPrice}}</td>
+<div *ngIf="dataLoaded == false" class="spinner-border text-success" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
 
-
+<div class="mb-3">
+  <label for="FilterText" class="form-label">Aradığınız ürünü giriniz</label>
+  <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Araba">
+</div>
+<div *ngIf= "filterText.length>2"  class="alert alert-danger">
+  {{filterText}} aradınız
+</div>
+<table *ngIf="dataLoaded == true"  class="table">
+  <thead>
+    <tr>
+      
+      <th>Id</th>
+      <th>İsim</th>
+      <th>Kategori İsmi</th>
+      <th>Fiyat</th>
+      <th>KDV'li fiyat</th>
+      <th>Stok Adedi</th>
     </tr>
+  </thead>
+  <tr *ngFor="let product of products | filterPipe:filterText">
+    <td>{{ product.productId }}</td>
+    <td>{{ product.productName |uppercase}}</td>
+    <td>{{ product.categoryId }}</td>
+    <td>{{ product.unitPrice }}</td>
+    <td>{{ product.unitPrice | vatAdded:18 | currency}}</td>
+    <td>{{ product.unitsInStock }}</td>
+  </tr>
 </table>
