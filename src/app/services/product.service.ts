@@ -21,5 +21,9 @@ export class ProductService {
     let newPath=this.apiUrl+"products/getbycategory?categoryId="+categoryId
     return this.httpClient.get<ListResponseModel<Product>>(newPath);
  }
+
+ add(product:Product){
+   return this.httpClient.post(this.apiUrl+"products/add",product);
+ }
 }
 
